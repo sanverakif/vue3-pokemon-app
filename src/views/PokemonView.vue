@@ -87,6 +87,9 @@ export default {
   // mounted: function () {
   //   this.getPokemonData(); //method1 will execute at pageload
   // },
+  mounted: function () {
+    this.dataKontrolu();
+  },
   created() {
     this.dataKontrolu();
     this.getPokemonData();
