@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <!-- {{this.$store.state.yedekData}} -->
+    <!-- <li v-for="item in $store.state.yedekData" :key="item">
+      {{ item.slice(78, 79) }}
+    </li> -->
     <table class="table" style="width: 400px">
       <thead>
         <tr>
@@ -23,9 +27,13 @@
             >
           </td>
           <td>
+            <small v-for="item in $store.state.yedekData" :key="item"
+              >{{ item.slice(78, 79) }}</small
+            >
             sonuc:
             <small v-if="dataKontrolu()">{{ dataSonuc }}</small>
             <small v-else>{{ dataSonuc2 }}</small>
+            <!-- <small>{{this.$store.getters.dataAl}}</small> -->
           </td>
           <!-- <button @click="dataKontrolu" class="btn btn-primary">tıkla</button> -->
         </tr>
@@ -58,7 +66,6 @@ export default {
         });
         console.log("pokemonlar alındı", this.pokemonData);
       });
-
       // console.log(
       //   "pokemonlar getirildi",
       //   localStorage.getItem("favoriPokemon", JSON.stringify(this.$store.state.yedekData))
@@ -84,19 +91,19 @@ export default {
     //   // this.$router.push({ name: "PokemonDetail" + this.$route.params.pokemonItem.id });
     // },
   },
-  // mounted: function () {
-  //   this.getPokemonData(); //method1 will execute at pageload
-  // },
   mounted: function () {
-    this.dataKontrolu();
+    this.getPokemonData(); //method1 will execute at pageload
   },
+  // mounted: function () {
+  //   this.dataKontrolu();
+  // },
   created() {
     this.dataKontrolu();
-    this.getPokemonData();
+    // this.getPokemonData();
   },
   // computed: {
   //   ...mapGetters({
-  //     insan3: "insan3",
+  //     dataAl: "dataAl",
   //   }),
   // },
 };

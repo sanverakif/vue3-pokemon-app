@@ -19,6 +19,11 @@ export default createStore({
     },
 
     // getters: {
+
+    //     dataAl: state => state.yedekData.slice(78, 79).filter(x => x.state.yedekData == this.yedekData),
+    // }
+    // }
+    // getters: {
     //     insan: state => state.veri.filter(x => x.sonuc == "basarili"),
     //     insan2: state => state.veri.filter(x => x.sonuc == "basarisiz"),
     //     insan3: state => state.yedekData.filter(x => x.state.yedekData)

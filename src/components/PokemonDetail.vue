@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- {{this.$store.state.yedekData}}
+    {{this.pokemonDetail.name}} -->
     <div class="container">
       <table class="table" style="margin-top: 50px">
         <thead>
