@@ -75,12 +75,14 @@
       >
         Favorilerden sil
       </button>
+      {{favoriItemListele}}
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   name: "PokemonDetail",
   data() {
@@ -120,7 +122,6 @@ export default {
         "favoriPokemon",
         JSON.stringify(this.$store.state.yedekData)
       );
-
       console.log(this.$store.state.yedekData);
       console.log(this.pokemonDetail.name);
 

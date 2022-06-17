@@ -3,8 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 // import { appAxios } from "@/utils/appAxios";
-
 const app = createApp(App);
+
 app.use(router);
 app.use(store);
 app.mount('#app')

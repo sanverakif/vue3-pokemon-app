@@ -1,16 +1,12 @@
 <template>
   <div class="container">
-    <!-- {{this.$store.state.yedekData}} -->
-    <!-- <li v-for="item in $store.state.yedekData" :key="item">
-      {{ item.slice(78, 79) }}
-    </li> -->
-    <table class="table" style="width: 400px">
+    <table class="table" style="width: 500px">
       <thead>
         <tr>
           <th>Id</th>
           <th>Name</th>
-          <th>Url</th>
-          <th>Favoriler</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -18,24 +14,32 @@
           <td>{{ item.Id }}</td>
           <td>{{ item.Name }}</td>
           <td>
-            <!-- <button @click="gotoDetail(item.Id)" class="btn btn-info">
-              Detay
-            </button> -->
-            <router-link
-              :to="{ name: 'PokemonDetail', params: { pokemonId: item.Id } }"
-              ><button class="btn btn-info">Detay</button></router-link
+            <button
+              @click="gotoDetail(item.Id)"
+              class="btn btn-primary"
+              style="margin-left: 5px"
             >
+              Detaya git
+            </button>
           </td>
           <td>
-            <small v-for="item in $store.state.yedekData" :key="item"
-              >{{ item.slice(78, 79) }}</small
+            <button
+              @click="favorilereEkleKaldir(item, true)"
+              class="btn btn-success"
+              style="margin-left: 5px"
             >
-            sonuc:
-            <small v-if="dataKontrolu()">{{ dataSonuc }}</small>
-            <small v-else>{{ dataSonuc2 }}</small>
-            <!-- <small>{{this.$store.getters.dataAl}}</small> -->
+              Fav. Ekle
+            </button>
           </td>
-          <!-- <button @click="dataKontrolu" class="btn btn-primary">tıkla</button> -->
+          <td>
+            <button
+              @click="favorilereEkleKaldir(item, false)"
+              class="btn btn-danger"
+              style="margin-left: 5px"
+            >
+              Fav. Kaldır
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -44,14 +48,12 @@
 
 <script>
 import axios from "axios";
-// import { mapGetters } from "vuex";
 export default {
   name: "PokemonView",
   data() {
     return {
       pokemonData: [],
-      dataSonuc: "",
-      dataSonuc2: "",
+      show: true,
     };
   },
   methods: {
@@ -64,47 +66,45 @@ export default {
           pokemonItem.url = row.url;
           this.pokemonData.push(pokemonItem);
         });
-        console.log("pokemonlar alındı", this.pokemonData);
       });
-      // console.log(
-      //   "pokemonlar getirildi",
-      //   localStorage.getItem("favoriPokemon", JSON.stringify(this.$store.state.yedekData))
-      // );
     },
-    dataKontrolu: function () {
-      // this.$store.state.yedekData != null
-      if (localStorage.getItem("favoriPokemon") != null) {
-        console.log("data geldi");
-        this.dataSonuc = this.$store.state.veri[0].sonuc;
-        return true;
-      } else {
-        this.dataSonuc2 = this.$store.state.veri[1].sonuc;
-        return false;
+    gotoDetail(id) {
+      this.$router.push({
+        name: "PokemonDetail",
+        params: { pokemonId: id },
+      });
+    },
+    favorilereEkleKaldir: function (row, favoriyeEkle) {
+      console.log("data", row);
+      if (favoriyeEkle == true) {
+        var localData = localStorage.getItem("favoriPokemon");
+        if (localData == null) {
+          localStorage.setItem("favoriPokemon", JSON.stringify([row.Id]));
+        } else {
+          var idGonder = JSON.parse(localStorage.getItem("favoriPokemon"));
+          if (idGonder.includes(row.Id) == false) {
+            idGonder.push(row.Id);
+            localStorage.setItem("favoriPokemon", JSON.stringify(idGonder));
+          }
+        }
+      } 
+      else 
+      {
+        var localData1 = localStorage.getItem("favoriPokemon");
+        if (localData1 != null) 
+        {
+          var idSil = JSON.parse(localStorage.getItem("favoriPokemon"));
+          if (idSil.includes(row.Id) == true) 
+          {
+            idSil.splice(idSil.indexOf(row.Id), 1);
+            localStorage.setItem("favoriPokemon", JSON.stringify(idSil));
+          }
+        }
       }
     },
-    //roota parametre ekledim Evente çağırırken döngüde olduğu için id yi atayabildim.
-    // gotoDetail: function (id) {
-    //   this.$router.push("PokemonDetail/" + id);
-    //   // this.$router.push('/PokemonDetail');
-    //   // this.$router.push({ name: "PokemonDetail", params: { id: this.pokemonItem. Id } });
-    //   // this.$router.push({ name: "PokemonDetail", params: { pokemonId: this.pokemonItem.Id } });
-    //   // this.$router.push({ name: "PokemonDetail" + this.$route.params.pokemonItem.id });
-    // },
   },
   mounted: function () {
-    this.getPokemonData(); //method1 will execute at pageload
+    this.getPokemonData();
   },
-  // mounted: function () {
-  //   this.dataKontrolu();
-  // },
-  created() {
-    this.dataKontrolu();
-    // this.getPokemonData();
-  },
-  // computed: {
-  //   ...mapGetters({
-  //     dataAl: "dataAl",
-  //   }),
-  // },
 };
 </script>

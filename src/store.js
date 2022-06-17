@@ -15,17 +15,13 @@ export default createStore({
             { sonuc: "basarili" },
             { sonuc: "basarisiz" }
         ],
-        // name: this.$route.params.pokemonId
     },
 
-    // getters: {
+    getters: {
+        getFilteredDocketActions: (state) => {
+            state.yedekData[0].filter(item => item.slice(78, 79) == "1")
+        },
+    }
+    // getters: { dataAl: state => state.yedekData[0].slice(78, 79) }
 
-    //     dataAl: state => state.yedekData.slice(78, 79).filter(x => x.state.yedekData == this.yedekData),
-    // }
-    // }
-    // getters: {
-    //     insan: state => state.veri.filter(x => x.sonuc == "basarili"),
-    //     insan2: state => state.veri.filter(x => x.sonuc == "basarisiz"),
-    //     insan3: state => state.yedekData.filter(x => x.state.yedekData)
-    // }
 });
