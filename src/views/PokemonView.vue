@@ -21,17 +21,17 @@
             >
               Detaya git
             </button>
-          </td>
-          <td>
+
             <button
               @click="favorilereEkleKaldir(item, true)"
               class="btn btn-success"
               style="margin-left: 5px"
+              v-show="item.Id"
             >
               Fav. Ekle
             </button>
           </td>
-          <td>
+          <!-- <td>
             <button
               @click="favorilereEkleKaldir(item, false)"
               class="btn btn-danger"
@@ -39,7 +39,7 @@
             >
               Fav. Kaldır
             </button>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -53,7 +53,6 @@ export default {
   data() {
     return {
       pokemonData: [],
-      show: true,
     };
   },
   methods: {
@@ -75,31 +74,33 @@ export default {
       });
     },
     favorilereEkleKaldir: function (row, favoriyeEkle) {
+      //butona ilk parametresini item olarak verdik ve item, rowun yerine geçer
       console.log("data", row);
+      //2.parametre true ise
       if (favoriyeEkle == true) {
+        //localdata kontrolu yapıyoruz deger ataması için
         var localData = localStorage.getItem("favoriPokemon");
+        //localdata boşsa
         if (localData == null) {
+          //seçilen id yi string formatına çeviriyoruz 0: "1"
           localStorage.setItem("favoriPokemon", JSON.stringify([row.Id]));
         } else {
+          /*
+          set ettikten sonra 1+ item eklemek istiyoruz Localdata boş değilse ++
+          aynı id eklenilmesini engelliyoruz,string fonksiyonu kullanıyoruz
+          aynı id değil farklı id ise yeni id yi puslayıp ekliyoruz
+          */
+
+          //localdaki girilen dataları aldık
           var idGonder = JSON.parse(localStorage.getItem("favoriPokemon"));
+          // aynı id yoksa bulunmuyorsa
           if (idGonder.includes(row.Id) == false) {
+            //yeni id yi ekle
             idGonder.push(row.Id);
+            //son hali ile set ediyoruz, son deger eklendi
             localStorage.setItem("favoriPokemon", JSON.stringify(idGonder));
           }
-        }
-      } 
-      else 
-      {
-        var localData1 = localStorage.getItem("favoriPokemon");
-        if (localData1 != null) 
-        {
-          var idSil = JSON.parse(localStorage.getItem("favoriPokemon"));
-          if (idSil.includes(row.Id) == true) 
-          {
-            idSil.splice(idSil.indexOf(row.Id), 1);
-            localStorage.setItem("favoriPokemon", JSON.stringify(idSil));
-          }
-        }
+        }       
       }
     },
   },

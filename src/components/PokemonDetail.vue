@@ -49,40 +49,35 @@
       <router-link :to="{ name: 'PokemonView' }"
         ><button class="btn btn-info">Pokemonlar</button></router-link
       >
-
       <button
-        @click="setLocalStorageGetData()"
-        class="btn btn-success"
+        @click="favorilereEklenenPokemonuKaldir(true)"
+        class="btn btn-danger"
         style="margin-left: 5px"
-        v-show="show"
       >
-        Favorilere ekle
+        Fav. Kaldır
       </button>
 
-      <button
+      <!-- <button
+        @click="favorilereEklenenPokemonuKaldir(false)"
+        class="btn btn-success"
+        style="margin-left: 5px"
+      >
+        Fav. Ekle
+      </button> -->
+      <!-- <button
         @click="deleteLocalStorageGetData()"
         class="btn btn-danger"
         style="margin-left: 5px"
         v-show="!show"
       >
         Favorilerden sil
-      </button>
-
-      <button
-        @click="deleteLocalStorageGetData()"
-        class="btn btn-danger"
-        style="margin-left: 5px; float: right"
-      >
-        Favorilerden sil
-      </button>
-      {{favoriItemListele}}
+      </button> -->
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
 export default {
   name: "PokemonDetail",
   data() {
@@ -104,60 +99,45 @@ export default {
         console.log("datalar", res.data);
       });
     },
-    setLocalStorageGetData: function (show) {
-      // this.favoriPokemon.push(
+    favorilereEklenenPokemonuKaldir(itemKontrol) {
+      //localdaki dataları değiskene atadık
 
-      this.$store.state.yedekData.push(
-        this.pokemonDetail.sprites.back_default +
-          " " +
-          this.pokemonDetail.name +
-          " " +
-          this.pokemonDetail.types[0].type.name +
-          " " +
-          this.pokemonDetail.weight +
-          " " +
-          this.pokemonDetail.height
-      );
-      localStorage.setItem(
-        "favoriPokemon",
-        JSON.stringify(this.$store.state.yedekData)
-      );
-      console.log(this.$store.state.yedekData);
-      console.log(this.pokemonDetail.name);
-
-      // if (localStorage.getItem("favoriPokemon") != null) {
-      //   this.$emit("add-todo", this.metin);
-      //   //  this.$store.state.veri.push({ sonuc : "favorilere eklendi"});
-      //   // this.$store.getters.insan;
-      //   // this.$store.state.data.push(this.metin);
-      //   console.log("veri gitti");
-      // } else {
-      //   console.log("veri gitmedi");
-      // }
-      this.show = show;
+      if (itemKontrol == true) {
+        var favoriData = localStorage.getItem("favoriPokemon");
+        //değisken boş değilse
+        if (favoriData != null) {
+          //objeleri id sile atadık
+          var idSil = JSON.parse(localStorage.getItem("favoriPokemon"));
+          //elemanlar içerisinden seçilen id nin silinmesini istiyoruz değer varsa
+          if (idSil.includes(this.$route.params.pokemonId) == true) {
+            //seçilen idyi silmek istiyoruz İdsil içerisinde row.id varsa(indexof ile diğerin içerip içermediğini kontrol ederiz içerirse 1 içermezse -1)
+            idSil.splice(idSil.indexOf(this.$route.params.pokemonId), 1);
+            //değer bulunduktan sonra son halini setleriz
+            localStorage.setItem("favoriPokemon", JSON.stringify(idSil));
+          } else {
+            console.log("id değerler içerisinde yok");
+          }
+        }
+      }
     },
+    // getLocalStorageGetData: function () {
+    //   this.localData.split(" ");
+    //   this.akif = this.localData.split(" ");
+    //   var x = {};
+    //   x.image = this.akif[0];
+    //   x.name = this.akif[1];
+    //   x.typesName = this.akif[2];
+    //   x.weight = this.akif[3];
+    //   x.height = this.akif[4];
 
-    getLocalStorageGetData: function () {
-      this.localData.split(" ");
-      this.akif = this.localData.split(" ");
-      var x = {};
-      x.image = this.akif[0];
-      x.name = this.akif[1];
-      x.typesName = this.akif[2];
-      x.weight = this.akif[3];
-      x.height = this.akif[4];
-
-      this.akif.push(x);
-    },
-    deleteLocalStorageGetData: function (shows) {
-      localStorage.removeItem("favoriPokemon");
-      this.show = !shows;
-    },
+    //   this.akif.push(x);
+    // },
   },
 
   created: function () {
     var pokemonId = this.$route.params.pokemonId;
     this.getPokemonDetail(pokemonId); //method1 will execute at pageload
+    this.favorilereEklenenPokemonuKaldir();
   },
 };
 </script>
