@@ -22,14 +22,22 @@
               Detaya git
             </button>
 
-            <button
+            <AddFavouritePokemon
+              :item="item"
+              @favori="addFavourite($event)"
+            />
+            <!-- <AddFavouritePokemon
+              :item="item"
+              @favori="addFavourite(item, true, $event)"
+            /> -->
+            <!-- <button
               @click="favorilereEkleKaldir(item, true)"
               class="btn btn-success"
               style="margin-left: 5px"
               v-show="item.Id"
             >
               Fav. Ekle
-            </button>
+            </button> -->
           </td>
           <!-- <td>
             <button
@@ -48,11 +56,14 @@
 
 <script>
 import axios from "axios";
+import AddFavouritePokemon from "@/components/AddFavouritePokemon";
 export default {
   name: "PokemonView",
+  components: { AddFavouritePokemon },
   data() {
     return {
       pokemonData: [],
+      data: null,
     };
   },
   methods: {
@@ -67,42 +78,45 @@ export default {
         });
       });
     },
+    addFavourite(data) {
+      this.data = data;
+    },
     gotoDetail(id) {
       this.$router.push({
         name: "PokemonDetail",
         params: { pokemonId: id },
       });
     },
-    favorilereEkleKaldir: function (row, favoriyeEkle) {
-      //butona ilk parametresini item olarak verdik ve item, rowun yerine geçer
-      console.log("data", row);
-      //2.parametre true ise
-      if (favoriyeEkle == true) {
-        //localdata kontrolu yapıyoruz deger ataması için
-        var localData = localStorage.getItem("favoriPokemon");
-        //localdata boşsa
-        if (localData == null) {
-          //seçilen id yi string formatına çeviriyoruz 0: "1"
-          localStorage.setItem("favoriPokemon", JSON.stringify([row.Id]));
-        } else {
-          /*
-          set ettikten sonra 1+ item eklemek istiyoruz Localdata boş değilse ++
-          aynı id eklenilmesini engelliyoruz,string fonksiyonu kullanıyoruz
-          aynı id değil farklı id ise yeni id yi puslayıp ekliyoruz
-          */
+    // favorilereEkleKaldir: function (row, favoriyeEkle) {
+    //   //butona ilk parametresini item olarak verdik ve item, rowun yerine geçer
+    //   console.log("data", row);
+    //   //2.parametre true ise
+    //   if (favoriyeEkle == true) {
+    //     //localdata kontrolu yapıyoruz deger ataması için
+    //     var localData = localStorage.getItem("favoriPokemon");
+    //     //localdata boşsa
+    //     if (localData == null) {
+    //       //seçilen id yi string formatına çeviriyoruz 0: "1"
+    //       localStorage.setItem("favoriPokemon", JSON.stringify([row.Id]));
+    //     } else {
+    //       /*
+    //       set ettikten sonra 1+ item eklemek istiyoruz Localdata boş değilse ++
+    //       aynı id eklenilmesini engelliyoruz,string fonksiyonu kullanıyoruz
+    //       aynı id değil farklı id ise yeni id yi puslayıp ekliyoruz
+    //       */
 
-          //localdaki girilen dataları aldık
-          var idGonder = JSON.parse(localStorage.getItem("favoriPokemon"));
-          // aynı id yoksa bulunmuyorsa
-          if (idGonder.includes(row.Id) == false) {
-            //yeni id yi ekle
-            idGonder.push(row.Id);
-            //son hali ile set ediyoruz, son deger eklendi
-            localStorage.setItem("favoriPokemon", JSON.stringify(idGonder));
-          }
-        }       
-      }
-    },
+    //       //localdaki girilen dataları aldık
+    //       var idGonder = JSON.parse(localStorage.getItem("favoriPokemon"));
+    //       // aynı id yoksa bulunmuyorsa
+    //       if (idGonder.includes(row.Id) == false) {
+    //         //yeni id yi ekle
+    //         idGonder.push(row.Id);
+    //         //son hali ile set ediyoruz, son deger eklendi
+    //         localStorage.setItem("favoriPokemon", JSON.stringify(idGonder));
+    //       }
+    //     }
+    //   }
+    // },
   },
   mounted: function () {
     this.getPokemonData();

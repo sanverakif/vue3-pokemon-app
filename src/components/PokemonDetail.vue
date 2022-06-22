@@ -49,29 +49,42 @@
       <router-link :to="{ name: 'PokemonView' }"
         ><button class="btn btn-info">Pokemonlar</button></router-link
       >
-      <button
-        @click="favorilereEklenenPokemonuKaldir(true)"
+      <br />
+
+      <small v-if="favorilereEklenenPokemonunKontrolu"
+        ><button
+          @click="favorilereEklenenPokemonunKontrolu(true, true)"
+          class="btn btn-danger"
+          style="margin-left: 5px"
+          v-show="show"
+        >
+          Fav. Kaldır
+        </button></small
+      >
+
+      <!-- <button
+        @click="favorilereEklenenPokemonunKontrolu(true)"
         class="btn btn-danger"
         style="margin-left: 5px"
+        v-show="show"
       >
         Fav. Kaldır
       </button>
+
+      <button
+        @click="favorilereEklenenPokemonunKontrolu(false)"
+        class="btn btn-success"
+        style="margin-left: 5px"
+        v-show="show"
+      >
+        Fav. ekle
+      </button> -->
 
       <!-- <button
         @click="favorilereEklenenPokemonuKaldir(false)"
         class="btn btn-success"
         style="margin-left: 5px"
-      >
-        Fav. Ekle
-      </button> -->
-      <!-- <button
-        @click="deleteLocalStorageGetData()"
-        class="btn btn-danger"
-        style="margin-left: 5px"
-        v-show="!show"
-      >
-        Favorilerden sil
-      </button> -->
+      > -->
     </div>
   </div>
 </template>
@@ -99,7 +112,8 @@ export default {
         console.log("datalar", res.data);
       });
     },
-    favorilereEklenenPokemonuKaldir(itemKontrol) {
+
+    favorilereEklenenPokemonunKontrolu: function (itemKontrol, show) {
       //localdaki dataları değiskene atadık
 
       if (itemKontrol == true) {
@@ -114,30 +128,21 @@ export default {
             idSil.splice(idSil.indexOf(this.$route.params.pokemonId), 1);
             //değer bulunduktan sonra son halini setleriz
             localStorage.setItem("favoriPokemon", JSON.stringify(idSil));
+            this.show = show;
+            this.show = "";
           } else {
+            this.show = !show;
+            this.show = "";
             console.log("id değerler içerisinde yok");
           }
         }
       }
     },
-    // getLocalStorageGetData: function () {
-    //   this.localData.split(" ");
-    //   this.akif = this.localData.split(" ");
-    //   var x = {};
-    //   x.image = this.akif[0];
-    //   x.name = this.akif[1];
-    //   x.typesName = this.akif[2];
-    //   x.weight = this.akif[3];
-    //   x.height = this.akif[4];
-
-    //   this.akif.push(x);
-    // },
   },
 
   created: function () {
     var pokemonId = this.$route.params.pokemonId;
     this.getPokemonDetail(pokemonId); //method1 will execute at pageload
-    this.favorilereEklenenPokemonuKaldir();
   },
 };
 </script>
