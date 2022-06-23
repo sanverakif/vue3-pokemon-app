@@ -22,10 +22,7 @@
               Detaya git
             </button>
 
-            <AddFavouritePokemon
-              :item="item"
-              @favori="addFavourite($event)"
-            />
+            <AddFavouritePokemon :item="item" @favori="addFavourite($event)" />
             <!-- <AddFavouritePokemon
               :item="item"
               @favori="addFavourite(item, true, $event)"

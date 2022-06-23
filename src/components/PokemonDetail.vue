@@ -49,11 +49,10 @@
       <router-link :to="{ name: 'PokemonView' }"
         ><button class="btn btn-info">Pokemonlar</button></router-link
       >
-      <br />
-
-      <small v-if="favorilereEklenenPokemonunKontrolu"
+    
+      <small
         ><button
-          @click="favorilereEklenenPokemonunKontrolu(true, true)"
+          @click="favorilereEklenenPokemonunKontrolu(true,false)"
           class="btn btn-danger"
           style="margin-left: 5px"
           v-show="show"
@@ -61,24 +60,6 @@
           Fav. Kaldır
         </button></small
       >
-
-      <!-- <button
-        @click="favorilereEklenenPokemonunKontrolu(true)"
-        class="btn btn-danger"
-        style="margin-left: 5px"
-        v-show="show"
-      >
-        Fav. Kaldır
-      </button>
-
-      <button
-        @click="favorilereEklenenPokemonunKontrolu(false)"
-        class="btn btn-success"
-        style="margin-left: 5px"
-        v-show="show"
-      >
-        Fav. ekle
-      </button> -->
 
       <!-- <button
         @click="favorilereEklenenPokemonuKaldir(false)"
@@ -124,15 +105,13 @@ export default {
           var idSil = JSON.parse(localStorage.getItem("favoriPokemon"));
           //elemanlar içerisinden seçilen id nin silinmesini istiyoruz değer varsa
           if (idSil.includes(this.$route.params.pokemonId) == true) {
+            this.show = !show;
             //seçilen idyi silmek istiyoruz İdsil içerisinde row.id varsa(indexof ile diğerin içerip içermediğini kontrol ederiz içerirse 1 içermezse -1)
             idSil.splice(idSil.indexOf(this.$route.params.pokemonId), 1);
             //değer bulunduktan sonra son halini setleriz
             localStorage.setItem("favoriPokemon", JSON.stringify(idSil));
-            this.show = show;
-            this.show = "";
           } else {
-            this.show = !show;
-            this.show = "";
+            this.show = show;
             console.log("id değerler içerisinde yok");
           }
         }
